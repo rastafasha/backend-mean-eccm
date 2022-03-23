@@ -10,7 +10,7 @@ const HospitalSchema = Schema({
     },
     usuario: {
         type: Schema.Types.ObjectId,
-        ref: 'Usuario',
+        ref: 'User',
         require: true
     }
 }, { collection: 'hospitales' }); //cambia a plural nombre de tabla en bd(solo español)

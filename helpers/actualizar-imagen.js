@@ -6,6 +6,8 @@ const Marca = require('../models/marca');
 const Congeneral = require('../models/congeneral');
 const Producto = require('../models/producto');
 const Promocion = require('../models/promocion');
+const Galeria = require('../models/galeria');
+const Ingreso = require('../models/ingreso');
 
 const borrarImagen = (path) => {
 
@@ -124,6 +126,36 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
 
             usuario.img = nombreArchivo;
             await usuario.save();
+            return true;
+            break;
+
+        case 'galerias':
+            const galeria = await Galeria.findById(id);
+            if (!galeria) {
+                console.log('No es un galeria por id');
+                return false;
+            }
+            pathViejo = `./uploads/galerias/${galeria.img}`;
+
+            borrarImagen(pathViejo);
+
+            galeria.img = nombreArchivo;
+            await galeria.save();
+            return true;
+            break;
+
+        case 'ingresos':
+            const ingreso = await Ingreso.findById(id);
+            if (!ingreso) {
+                console.log('No es un ingreso por id');
+                return false;
+            }
+            pathViejo = `./uploads/ingresos/${ingreso.img}`;
+
+            borrarImagen(pathViejo);
+
+            ingreso.img = nombreArchivo;
+            await ingreso.save();
             return true;
             break;
     }

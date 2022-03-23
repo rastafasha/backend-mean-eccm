@@ -5,7 +5,7 @@ const Dislikescoment = require('../models/dislikescoment');
 
 const getComentarios = async(req, res) => {
 
-    const comentarios = await Comentario.find().populate(' comentario');
+    const comentarios = await Comentario.find();
 
     res.json({
         ok: true,
@@ -41,18 +41,12 @@ const getComentario = async(req, res) => {
             });
         });
 
-
-    // res.json({
-    //     ok: true,
-    //     color
-    //     //uid: req.uid
-    // });
 };
 
 const crearComentario = async(req, res) => {
 
     const uid = req.uid;
-    const color = new Comentario({
+    const comentario = new Comentario({
         usuario: uid,
         ...req.body
     });

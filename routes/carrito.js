@@ -1,5 +1,5 @@
 /*
- Ruta: /api/carrito
+ Ruta: /api/carritos
  */
 
 const { Router } = require('express');
@@ -22,13 +22,13 @@ router.get('/', getCarritos);
 
 router.post('/', [
     validarJWT,
-    check('cantidad', 'El cantidad del categoria es necesario').not().isEmpty(),
+    check('cantidad', 'El cantidad del carrito es necesario').not().isEmpty(),
     validarCampos
 ], crearCarrito);
 
 router.put('/:id', [
     validarJWT,
-    check('cantidad', 'El cantidad del categoria es necesario').not().isEmpty(),
+    check('cantidad', 'El cantidad del carrito es necesario').not().isEmpty(),
     validarCampos
 ], actualizarCarrito);
 

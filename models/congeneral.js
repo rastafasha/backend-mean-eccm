@@ -17,6 +17,7 @@ var CongeneralSchema = Schema({
     instagram: { type: String, required: false },
     youtube: { type: String, required: false },
     twitter: { type: String, required: false },
+    language: { type: String, required: false },
 });
 
 module.exports = mongoose.model('congeneral', CongeneralSchema);

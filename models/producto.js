@@ -5,7 +5,6 @@ var Schema = mongoose.Schema;
 
 var ProductoSchema = Schema({
     titulo: { type: String, required: true, unique: true },
-    slug: { type: String, unique: true },
     img: { type: String, required: false },
     precio_ahora: { type: Number, required: true },
     precio_antes: { type: Number, required: true },
@@ -19,7 +18,7 @@ var ProductoSchema = Schema({
     nombre_selector: { type: String, required: false },
     stars: { type: Number },
     ventas: { type: Number },
-    status: { type: String, required: false },
+    status: { type: String, required: false, default: 'Desactivado' },
     createdAt: { type: Date, default: Date.now, required: true },
     updatedAt: { type: Date }
 });

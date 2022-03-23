@@ -47,33 +47,6 @@ const getGaleria = async(req, res) => {
     // });
 };
 
-const crearGaleria = async(req, res) => {
-
-    const uid = req.uid;
-    const galeria = new Galeria({
-        usuario: uid,
-        ...req.body
-    });
-
-    try {
-
-        const galeriaDB = await galeria.save();
-
-        res.json({
-            ok: true,
-            galeria: galeriaDB
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Hable con el admin'
-        });
-    }
-
-
-};
 
 const actualizarGaleria = async(req, res) => {
 
@@ -175,13 +148,41 @@ function findByProduct(req, res) {
 
 }
 
+function registro(req, res, next) {
+    var params = req.body;
+
+    if (req.files.imagenes) {
+
+        req.files.imagenes.forEach((elem, index) => {
+            console.log(elem);
+
+            var imagen_path = elem.path;
+            var name = imagen_path.split('\\');
+            var imagen_name = name[2];
+
+            var galeria = new Galeria();
+            galeria.producto = params.producto;
+            galeria.imagen = imagen_name;
+
+
+            galeria.save((err, img_save) => {
+                if (err) {
+                    res.status(500).send({ error: err });
+                }
+            });
+
+        });
+        res.status(200).send({ message: "Registrado" });
+    }
+}
+
 
 
 module.exports = {
     getGalerias,
-    crearGaleria,
     actualizarGaleria,
     borrarGaleria,
     getGaleria,
-    findByProduct
+    findByProduct,
+    registro
 };

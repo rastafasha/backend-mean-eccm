@@ -3,7 +3,7 @@ const Direccion = require('../models/direccion');
 
 const getDireccions = async(req, res) => {
 
-    const direccions = await Direccion.find().populate('nombre img subcategorias');
+    const direccions = await Direccion.find();
 
     res.json({
         ok: true,

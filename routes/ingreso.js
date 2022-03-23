@@ -12,7 +12,8 @@ const {
     getIngreso,
     initData,
     listar,
-    detalle
+    detalle,
+
 } = require('../controllers/ingresoController');
 const { validarJWT } = require('../middlewares/validar-jwt');
 const { check } = require('express-validator');
@@ -22,13 +23,13 @@ router.get('/', getIngresos);
 
 router.post('/', [
     validarJWT,
-    check('tipo', 'El tipo del categoria es necesario').not().isEmpty(),
+    check('ingreso', 'El tipo del ingreso es necesario').not().isEmpty(),
     validarCampos
 ], crearIngreso);
 
 router.put('/:id', [
     validarJWT,
-    check('tipo', 'El tipo del categoria es necesario').not().isEmpty(),
+    check('ingreso', 'El tipo del ingreso es necesario').not().isEmpty(),
     validarCampos
 ], actualizarIngreso);
 
@@ -37,9 +38,10 @@ router.delete('/:id', validarJWT, borrarIngreso);
 router.get('/:id', validarJWT, getIngreso);
 
 
-router.get('/initData', initData);
+router.get('/initData', validarJWT, initData);
 router.get('/listar/:search/:orden/:tipo', listar);
 router.get('/detalle/:id', detalle);
+// api.get('/ingreso/factura/:img', get_img);
 
 
 

@@ -1,57 +1,46 @@
 const { response } = require('express');
 const Color = require('../models/color');
 
-const getColors = (req, res) => {
+const getColors = async(req, res) => {
 
-    var id = req.params['id'];
-    Color.find({ producto: id }, (err, data_color) => {
-        if (!err) {
-            if (data_color) {
-                res.status(200).send({ colores: data_color });
-            } else {
-                res.status(500).send({ error: err });
-            }
-        } else {
-            res.status(500).send({ error: err });
-        }
+    const colors = await Color.find().populate('titulo producto');
+
+    res.json({
+        ok: true,
+        colors
     });
 };
 
-// const getColor = async(req, res) => {
+const getColor = async(req, res) => {
 
-//     const id = req.params.id;
-//     const uid = req.uid;
+    const id = req.params.id;
+    const uid = req.uid;
 
-//     Color.findById(id)
-//         .exec((err, color) => {
-//             if (err) {
-//                 return res.status(500).json({
-//                     ok: false,
-//                     mensaje: 'Error al buscar color',
-//                     errors: err
-//                 });
-//             }
-//             if (!color) {
-//                 return res.status(400).json({
-//                     ok: false,
-//                     mensaje: 'El color con el id ' + id + 'no existe',
-//                     errors: { message: 'No existe un color con ese ID' }
-//                 });
+    Color.findById(id)
+        .exec((err, color) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'Error al buscar color',
+                    errors: err
+                });
+            }
+            if (!color) {
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: 'El color con el id ' + id + ' no existe',
+                    errors: { message: 'No existe un color con ese ID' }
+                });
 
-//             }
-//             res.status(200).json({
-//                 ok: true,
-//                 color: color
-//             });
-//         });
+            }
+            res.status(200).json({
+                ok: true,
+                color: color
+            });
+        });
 
+};
 
-//     // res.json({
-//     //     ok: true,
-//     //     color
-//     //     //uid: req.uid
-//     // });
-// };
 
 const crearColor = (req, res) => {
 
@@ -149,5 +138,5 @@ module.exports = {
     crearColor,
     actualizarColor,
     borrarColor,
-    // getColor,
+    getColor
 };

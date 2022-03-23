@@ -9,7 +9,9 @@ const fileUpload = (req, res = response) => {
     const tipo = req.params.tipo;
     const id = req.params.id;
 
-    const tiposValidos = ['productos', 'marcas', 'categorias', 'galerias', 'promocions', 'congenerals', 'hospitales', 'medicos', 'usuarios'];
+    const tiposValidos = ['productos', 'marcas', 'categorias', 'galerias', 'promocions',
+        'congenerals', 'hospitales', 'medicos', 'usuarios', 'ingresos'
+    ];
     if (!tiposValidos.includes(tipo)) {
         return res.status(400).json({
             ok: false,

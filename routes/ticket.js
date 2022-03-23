@@ -21,13 +21,13 @@ router.get('/', getTickets);
 
 router.post('/', [
     validarJWT,
-    check('titulo', 'El titulo del categoria es necesario').not().isEmpty(),
+    check('tema', 'El tema del ticket es necesario').not().isEmpty(),
     validarCampos
 ], crearTicket);
 
 router.put('/:id', [
     validarJWT,
-    check('titulo', 'El titulo del categoria es necesario').not().isEmpty(),
+    check('tema', 'El tema del ticket es necesario').not().isEmpty(),
     validarCampos
 ], actualizarTicket);
 

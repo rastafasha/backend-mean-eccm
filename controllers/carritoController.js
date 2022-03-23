@@ -3,7 +3,7 @@ const Carrito = require('../models/carrito');
 
 const getCarritos = async(req, res) => {
 
-    const carritos = await Carrito.find().populate(' producto');
+    const carritos = await Carrito.find();
 
     res.json({
         ok: true,
@@ -39,18 +39,12 @@ const getCarrito = async(req, res) => {
             });
         });
 
-
-    // res.json({
-    //     ok: true,
-    //     color
-    //     //uid: req.uid
-    // });
 };
 
 const crearCarrito = async(req, res) => {
 
     const uid = req.uid;
-    const color = new Carrito({
+    const carrito = new Carrito({
         usuario: uid,
         ...req.body
     });
@@ -144,7 +138,7 @@ const borrarCarrito = async(req, res) => {
 
 
 function previewCarrito(req, res) {
-    var id = req.params['id'];
+    const id = req.params.id;
 
     Carrito.find({ user: id }).populate('producto').sort({ createdAt: -1 }).exec((err, carrito_data) => {
         if (!err) {
@@ -160,7 +154,7 @@ function previewCarrito(req, res) {
 }
 
 function removeCarrito(req, res) {
-    var id = req.params['id'];
+    const id = req.params.id;
     Carrito.findByIdAndRemove({ _id: id }, (err, carrito_data) => {
         if (!err) {
             if (carrito_data) {

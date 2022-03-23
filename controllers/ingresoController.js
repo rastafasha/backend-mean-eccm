@@ -5,13 +5,24 @@ const Producto = require('../models/producto');
 
 const getIngresos = async(req, res) => {
 
-    const ingresos = await Ingreso.find().populate(' comentario');
+    const uid = req.uid;
+
+    const ingresos = await Ingreso.find().sort({ createdAt: -1 }).populate('user');
 
     res.json({
         ok: true,
-        ingresos
+        ingresos,
+        usuario: uid
     });
 };
+
+function initData(req, res) {
+    Ingreso.find().sort({ createdAt: -1 }).populate('user').exec((err, data) => {
+        if (data) {
+            res.status(200).send({ data: data });
+        }
+    });
+}
 
 const getIngreso = async(req, res) => {
 
@@ -41,18 +52,12 @@ const getIngreso = async(req, res) => {
             });
         });
 
-
-    // res.json({
-    //     ok: true,
-    //     color
-    //     //uid: req.uid
-    // });
 };
 
 const crearIngreso = async(req, res) => {
 
     const uid = req.uid;
-    const color = new Ingreso({
+    const ingreso = new Ingreso({
         usuario: uid,
         ...req.body
     });
@@ -155,13 +160,7 @@ function detalle(req, res) {
     })
 }
 
-function initData(req, res) {
-    Ingreso.find().sort({ createdAt: -1 }).populate('user').exec((err, data) => {
-        if (data) {
-            res.status(200).send({ data: data });
-        }
-    });
-}
+
 
 function listar(req, res) {
     var tipo = req.params['tipo'];
