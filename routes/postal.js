@@ -29,7 +29,7 @@ router.put('/:id', [
 
 router.delete('/:id', validarJWT, borrarPostal);
 
-router.get('/:id', validarJWT, getPostal);
+router.get('/:id', getPostal);
 
 
 

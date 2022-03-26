@@ -1,5 +1,5 @@
 /*
- Ruta: /api/categoria
+ Ruta: /api/categorias
  */
 
 const { Router } = require('express');
@@ -33,7 +33,7 @@ router.put('/:id', [
 
 router.delete('/:id', validarJWT, borrarCategoria);
 
-router.get('/:id', validarJWT, getCategoria);
+router.get('/:id', getCategoria);
 
 router.get('/slider', get_car_slide);
 

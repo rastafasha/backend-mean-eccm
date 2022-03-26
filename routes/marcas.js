@@ -25,7 +25,7 @@ router.put('/:id', [
 
 router.delete('/:id', validarJWT, borrarMarca);
 
-router.get('/:id', validarJWT, getMarca);
+router.get('/:id',  getMarca);
 
 
 module.exports = router;

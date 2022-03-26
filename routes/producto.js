@@ -47,7 +47,7 @@ router.put('/:id', [
 
 router.delete('/:id', validarJWT, borrarProducto);
 
-router.get('/:id', validarJWT, getProducto);
+router.get('/:id', getProducto);
 
 
 router.get('/productos/admin/:filtro?', validarJWT, listarAdmin);
