@@ -38,7 +38,7 @@ router.put('/:id', [
 
 router.delete('/:id', validarJWT, borrarGaleria);
 
-router.get('/:id', validarJWT, getGaleria);
+router.get('/:id', getGaleria);
 
 router.get('/galeria_producto/find/:id?', findByProduct);
 

@@ -25,7 +25,7 @@ router.put('/:id', [
 
 router.delete('/:id', validarJWT, borrarPromocion);
 
-router.get('/:id',  getPromocion);
+router.get('/:id', getPromocion);
 
 
 module.exports = router;

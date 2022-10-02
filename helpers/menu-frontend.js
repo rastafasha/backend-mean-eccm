@@ -16,8 +16,8 @@ const getMenuFrontEnd = (role = 'USER') => {
             icono: 'mdi mdi-folder-lock-open',
             submenu: [
                 // {titulo: 'Usuarios', url:'usuarios'},
-                { titulo: 'Hospitales', url: 'hospitales' },
-                { titulo: 'Medicos', url: 'medicos' },
+                // { titulo: 'Hospitales', url: 'hospitales' },
+                // { titulo: 'Medicos', url: 'medicos' },
             ]
         },
     ];

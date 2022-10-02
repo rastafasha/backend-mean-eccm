@@ -10,11 +10,12 @@ const {
     crearProducto,
     actualizarProducto,
     borrarProducto,
-    // find_by_slug,
+    find_by_slug,
     listar_newest,
     listar_best_sellers,
     listar_populares,
     cat_by_name,
+    // listar,
     listar_papelera,
     listar_cat,
     listar_cat_papelera,
@@ -27,7 +28,9 @@ const {
     listarAdmin,
     listar_autocomplete,
     listar_general_data,
-    list_one
+    list_one,
+    listar_productosCateg
+
 } = require('../controllers/productoController');
 const { validarJWT } = require('../middlewares/validar-jwt');
 const { check } = require('express-validator');
@@ -51,17 +54,17 @@ router.get('/:id', getProducto);
 
 
 router.get('/productos/admin/:filtro?', validarJWT, listarAdmin);
-// router.get('/producto_admin_editar/one/:id?', validarJWT, list_one);
+router.get('/producto_admin_editar/one/:id?', list_one);
 router.get('/producto_admin/admin/desactivar/:id', validarJWT, desactivar);
 router.get('/producto_admin/admin/activar/:id', validarJWT, activar);
 router.get('/producto_admin/admin/papelera/:id', validarJWT, papelera);
-router.get('/producto_admin_cat/cat/:filtro?', validarJWT, listar_cat);
+
 router.get('/productos/papelera/:search?', validarJWT, listar_papelera);
-router.get('/productos/cat/papelera/:filtro?', validarJWT, listar_cat_papelera);
+
 
 // router.get('/producto/:filtro?/:min?/:max?/:sub?/:cat?/:orden?/:marca?', validarJWT, listar);
-router.get('/categoria/name/:nombre', validarJWT, cat_by_name);
-// router.get('/producto_by_slug/slug/:slug', validarJWT, find_by_slug);
+
+router.get('/producto_by_slug/slug/:slug', validarJWT, find_by_slug);
 router.get('/producto_cliente_autocomplete', validarJWT, listar_autocomplete);
 
 // router.put('/producto/:id/:banner?', path, validarJWT, actualizar);
@@ -75,7 +78,13 @@ router.get('/productos_ventas/aumentar/:id', validarJWT, aumentar_venta);
 router.get('/productos_ventas/best_sellers', validarJWT, listar_best_sellers);
 router.get('/productos_ventas/populares', validarJWT, listar_populares);
 
-router.get('/producto_general/general/data/:filtro?', validarJWT, listar_general_data);
+router.get('/producto_general/general/data/:filtro?', listar_general_data);
+
+//categoria
+router.get('/productos/cat/papelera/:filtro?', validarJWT, listar_cat_papelera);
+router.get('/producto_admin_cat/cat/:filtro?', validarJWT, listar_cat);
+router.get('/categoria/name/:nombre', validarJWT, cat_by_name);
+router.get('/productos_general/cat/categoria/:filtro?', listar_productosCateg);
 
 
 

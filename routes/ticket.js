@@ -33,7 +33,7 @@ router.put('/:id', [
 
 router.delete('/:id', validarJWT, borrarTicket);
 
-router.get('/:id',  getTicket);
+router.get('/:id', getTicket);
 
 router.post('/ticket_msm/send', send);
 router.get('/ticket_chat/chat/:de/:para', dataMessenger);

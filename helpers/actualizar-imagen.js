@@ -1,13 +1,15 @@
 const fs = require('fs');
 const Usuario = require('../models/usuario');
-const Medico = require('../models/medico');
-const Hospital = require('../models/hospital');
 const Marca = require('../models/marca');
 const Congeneral = require('../models/congeneral');
 const Producto = require('../models/producto');
 const Promocion = require('../models/promocion');
 const Galeria = require('../models/galeria');
 const Ingreso = require('../models/ingreso');
+const Blog = require('../models/blog');
+const Page = require('../models/page');
+const Slider = require('../models/slider');
+const Curso = require('../models/curso');
 
 const borrarImagen = (path) => {
 
@@ -23,36 +25,7 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
     let pathViejo = '';
 
     switch (tipo) {
-        case 'medicos':
-            const medico = await Medico.findById(id);
-            if (!medico) {
-                console.log('No es un medico por id');
-                return false;
-            }
-            pathViejo = `./uploads/medicos/${medico.img}`;
 
-            borrarImagen(pathViejo);
-
-            medico.img = nombreArchivo;
-            await medico.save();
-            return true;
-
-            break;
-
-        case 'hospitales':
-            const hospital = await Hospital.findById(id);
-            if (!hospital) {
-                console.log('No es un hospital por id');
-                return false;
-            }
-            pathViejo = `./uploads/hospitales/${hospital.img}`;
-
-            borrarImagen(pathViejo);
-
-            hospital.img = nombreArchivo;
-            await hospital.save();
-            return true;
-            break;
 
         case 'productos':
             const producto = await Producto.findById(id);
@@ -156,6 +129,66 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
 
             ingreso.img = nombreArchivo;
             await ingreso.save();
+            return true;
+            break;
+
+        case 'blogs':
+            const blog = await Blog.findById(id);
+            if (!blog) {
+                console.log('No es un blog por id');
+                return false;
+            }
+            pathViejo = `./uploads/blogs/${blog.img}`;
+
+            borrarImagen(pathViejo);
+
+            blog.img = nombreArchivo;
+            await blog.save();
+            return true;
+            break;
+
+        case 'pages':
+            const page = await Page.findById(id);
+            if (!page) {
+                console.log('No es un page por id');
+                return false;
+            }
+            pathViejo = `./uploads/pages/${page.img}`;
+
+            borrarImagen(pathViejo);
+
+            page.img = nombreArchivo;
+            await page.save();
+            return true;
+            break;
+
+        case 'sliders':
+            const slider = await Slider.findById(id);
+            if (!slider) {
+                console.log('No es un slider por id');
+                return false;
+            }
+            pathViejo = `./uploads/sliders/${slider.img}`;
+
+            borrarImagen(pathViejo);
+
+            slider.img = nombreArchivo;
+            await slider.save();
+            return true;
+            break;
+
+        case 'cursos':
+            const curso = await Curso.findById(id);
+            if (!curso) {
+                console.log('No es un curso por id');
+                return false;
+            }
+            pathViejo = `./uploads/cursos/${curso.img}`;
+
+            borrarImagen(pathViejo);
+
+            curso.img = nombreArchivo;
+            await curso.save();
             return true;
             break;
     }

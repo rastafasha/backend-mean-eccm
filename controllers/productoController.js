@@ -159,21 +159,21 @@ const borrarProducto = async(req, res) => {
 };
 
 
-// function find_by_slug(req, res) {
-//     var slug = req.params['slug'];
+function find_by_slug(req, res) {
+    var slug = req.params['slug'];
 
-//     Producto.findOne({ slug: slug }).exec((err, producto_data) => {
-//         if (err) {
-//             res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
-//         } else {
-//             if (producto_data) {
-//                 res.status(200).send({ producto: producto_data });
-//             } else {
-//                 res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
-//             }
-//         }
-//     });
-// }
+    Producto.findOne({ slug: slug }).exec((err, producto_data) => {
+        if (err) {
+            res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
+        } else {
+            if (producto_data) {
+                res.status(200).send({ producto: producto_data });
+            } else {
+                res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
+            }
+        }
+    });
+}
 
 function listar_newest(req, res) {
     Producto.find().sort({ createdAt: -1 }).limit(4).exec((err, data) => {
@@ -236,6 +236,8 @@ function listar_papelera(req, res) {
     });
 }
 
+
+
 function listar_cat(req, res) {
     var filtro = req.params['filtro'];
 
@@ -287,7 +289,7 @@ function desactivar(req, res) {
 
 function activar(req, res) {
     var id = req.params['id'];
-    console.log(id);
+    // console.log(id);
     Producto.findByIdAndUpdate({ _id: id }, { status: 'Activo' }, (err, producto_data) => {
         if (err) {
             res.status(500).send({ message: err });
@@ -416,6 +418,7 @@ const listar_autocomplete = async(req, res) => {
 
 };
 
+
 function listar_general_data(req, res) {
     var filtro = req.params['filtro'];
 
@@ -424,13 +427,35 @@ function listar_general_data(req, res) {
             res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
         } else {
             if (producto_data) {
-                console.log(producto_data);
-                res.status(200).send({ data: producto_data });
+                // console.log(producto_data);
+                // res.status(200).send({ data: producto_data });
+                res.status(200).json({
+                    ok: true,
+                    producto_data
+                });
             } else {
                 res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
             }
         }
     });
+}
+
+function listar_productosCateg(req, res) {
+
+    var filtro = req.params['filtro'];
+
+    Producto.find({ categoria: filtro, status: ['Activo', 'Desactivado', 'Edición'] }).populate('marca').populate('categoria').exec((err, producto_data) => {
+        if (err) {
+            res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
+        } else {
+            if (producto_data) {
+                res.status(200).send({ productos: producto_data });
+            } else {
+                res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
+            }
+        }
+    });
+
 }
 
 function list_one(req, res) {
@@ -451,13 +476,15 @@ function list_one(req, res) {
 }
 
 
+
+
 module.exports = {
     getProductos,
     crearProducto,
     getProducto,
     actualizarProducto,
     borrarProducto,
-    // find_by_slug,
+    find_by_slug,
     listar_newest,
     listar_best_sellers,
     listar_populares,
@@ -474,6 +501,8 @@ module.exports = {
     listarAdmin,
     listar_autocomplete,
     listar_general_data,
+    listar_productosCateg,
+    list_one,
 
 
 };

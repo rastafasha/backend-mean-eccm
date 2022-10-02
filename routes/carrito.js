@@ -32,9 +32,9 @@ router.put('/:id', [
     validarCampos
 ], actualizarCarrito);
 
-router.delete('/:id', validarJWT, borrarCarrito);
+router.delete('/:id', borrarCarrito);
 
-router.get('/:id', validarJWT, getCarrito);
+router.get('/:id', getCarrito);
 
 router.get('/limit/data/:id', previewCarrito);
 router.delete('/delete/:id', removeCarrito);

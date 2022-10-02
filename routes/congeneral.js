@@ -34,7 +34,7 @@ router.put('/:id', [
 
 router.delete('/:id', validarJWT, borrarCongeneral);
 
-router.get('/:id', validarJWT, getCongeneral);
+router.get('/:id', getCongeneral);
 router.get('/obtener', getCongenerals);
 
 

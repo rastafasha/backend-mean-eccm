@@ -1,7 +1,11 @@
 const { response } = require('express');
-const Hospital = require('../models/hospital');
 const Marca = require('../models/marca');
 const Usuario = require('../models/usuario');
+const Blog = require('../models/blog');
+const Page = require('../models/page');
+const Slider = require('../models/slider');
+const Producto = require('../models/producto');
+const Curso = require('../models/curso');
 
 const getTodo = async(req, res = response) => {
 
@@ -12,19 +16,27 @@ const getTodo = async(req, res = response) => {
     const medicos = await Medico.find({ nombre: regex });
     const hospitales = await Hospital.find({ nombre: regex });*/
 
-    const [usuarios, hospitales, marcas] = await Promise.all([
+    const [usuarios, marcas, blogs, pages, productos, sliders, cursos] = await Promise.all([
         Usuario.find({ nombre: regex }),
         Marca.find({ nombre: regex }),
-        Hospital.find({ nombre: regex })
+        Blog.find({ nombre: regex }),
+        Page.find({ nombre: regex }),
+        Producto.find({ nombre: regex }),
+        Slider.find({ nombre: regex }),
+        Curso.find({ nombre: regex }),
     ]);
 
     res.json({
         ok: true,
         usuarios,
         marcas,
-        hospitales
+        blogs,
+        pages,
+        productos,
+        sliders,
+        cursos
 
-    })
+    });
 }
 
 const getDocumentosColeccion = async(req, res = response) => {
@@ -41,19 +53,37 @@ const getDocumentosColeccion = async(req, res = response) => {
                 .populate('nombre img descripcion');
             break;
 
-        case 'hospitales':
-            data = await Hospital.find({ nombre: regex })
-                .populate('usuario', 'nombre img');
-            break;
 
         case 'usuarios':
             data = await Usuario.find({ nombre: regex });
             break;
 
+        case 'blogs':
+            data = await Blog.find({ nombre: regex });
+            break;
+
+        case 'pages':
+            data = await Page.find({ nombre: regex });
+            break;
+
+        case 'sliders':
+            data = await Slider.find({ nombre: regex });
+            break;
+
+        case 'productos':
+            data = await Producto.find({ nombre: regex });
+            break;
+
+        case 'cursos':
+            data = await Curso.find({ nombre: regex });
+            break;
+
+
+
         default:
             return res.status(400).json({
                 ok: false,
-                msg: 'la tabla debe ser usuarios/medicos/hospitales'
+                msg: 'la tabla debe ser usuarios'
             });
     }
 
@@ -62,19 +92,27 @@ const getDocumentosColeccion = async(req, res = response) => {
         resultados: data
     });
 
-    const [usuarios, marcas, hospitales] = await Promise.all([
+    const [usuarios, marcas, blogs, pages, productos, sliders, cursos] = await Promise.all([
         Usuario.find({ nombre: regex }),
         Marca.find({ nombre: regex }),
-        Hospital.find({ nombre: regex })
+        Blog.find({ nombre: regex }),
+        Page.find({ nombre: regex }),
+        Producto.find({ nombre: regex }),
+        Slider.find({ nombre: regex }),
+        Curso.find({ nombre: regex }),
     ]);
 
     res.json({
         ok: true,
         usuarios,
         marcas,
-        hospitales
+        blogs,
+        pages,
+        productos,
+        sliders,
+        cursos
 
-    })
+    });
 }
 
 module.exports = {
