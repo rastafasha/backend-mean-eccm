@@ -34,6 +34,16 @@ const getProductos = async(req, res) => {
     });
 };
 
+const destacado = async(req, res) => {
+
+    const productos = await Producto.find('isFeatured');
+
+    res.json({
+        ok: true,
+        productos
+    });
+};
+
 const getProducto = async(req, res) => {
 
     const id = req.params.id;
@@ -82,7 +92,7 @@ const crearProducto = async(req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({
             ok: false,
             msg: 'Hable con el admin'
@@ -226,7 +236,7 @@ function listar_papelera(req, res) {
             res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
         } else {
             if (producto_data) {
-                console.log(producto_data);
+                // console.log(producto_data);
 
                 res.status(200).send({ productos: producto_data });
             } else {
@@ -329,10 +339,11 @@ function reducir_stock(req, res) {
         if (producto) {
             Producto.findByIdAndUpdate({ _id: id }, { stock: parseInt(producto.stock) - parseInt(cantidad) }, (err, data) => {
                 if (data) {
-                    console.log(data);
+                    // console.log(data);
                     res.status(200).send({ data: data });
                 } else {
-                    console.log(err);
+                    // console.log(err);
+                    res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
                 }
             })
         }
@@ -348,10 +359,11 @@ function aumentar_stock(req, res) {
         if (producto) {
             Producto.findByIdAndUpdate({ _id: id }, { stock: parseInt(producto.stock) + parseInt(cantidad) }, (err, data) => {
                 if (data) {
-                    console.log(data);
+                    // console.log(data);
                     res.status(200).send({ data: data });
                 } else {
-                    console.log(err);
+                    // console.log(err);
+                    res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
                 }
             })
         }
@@ -366,10 +378,11 @@ function aumentar_venta(req, res) {
         if (producto) {
             Producto.findByIdAndUpdate({ _id: id }, { ventas: parseInt(producto.ventas) + 1 }, (err, data) => {
                 if (data) {
-                    console.log(data);
+                    // console.log(data);
                     res.status(200).send({ data: data });
                 } else {
-                    console.log(err);
+                    // console.log(err);
+                    res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
                 }
             })
         }
@@ -444,7 +457,7 @@ function listar_productosCateg(req, res) {
 
     var filtro = req.params['filtro'];
 
-    Producto.find({ categoria: filtro, status: ['Activo', 'Desactivado', 'Edición'] }).populate('marca').populate('categoria').exec((err, producto_data) => {
+    Producto.find({ categoria: filtro, status: ['Categoria'] }).populate('categoria').exec((err, producto_data) => {
         if (err) {
             res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
         } else {
@@ -478,6 +491,8 @@ function list_one(req, res) {
 
 
 
+
+
 module.exports = {
     getProductos,
     crearProducto,
@@ -503,6 +518,7 @@ module.exports = {
     listar_general_data,
     listar_productosCateg,
     list_one,
+    destacado
 
 
 };

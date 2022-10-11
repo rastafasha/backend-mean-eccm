@@ -13,6 +13,7 @@ const {
     initData,
     listar,
     detalle,
+    get_img
 
 } = require('../controllers/ingresoController');
 const { validarJWT } = require('../middlewares/validar-jwt');
@@ -41,7 +42,7 @@ router.get('/:id', validarJWT, getIngreso);
 router.get('/initData', validarJWT, initData);
 router.get('/listar/:search/:orden/:tipo', listar);
 router.get('/detalle/:id', detalle);
-// api.get('/ingreso/factura/:img', get_img);
+router.get('/ingresos/factura/:img', get_img);
 
 
 

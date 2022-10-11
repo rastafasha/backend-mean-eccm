@@ -10,6 +10,7 @@ const Blog = require('../models/blog');
 const Page = require('../models/page');
 const Slider = require('../models/slider');
 const Curso = require('../models/curso');
+const Categoria = require('../models/categoria');
 
 const borrarImagen = (path) => {
 
@@ -25,6 +26,21 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
     let pathViejo = '';
 
     switch (tipo) {
+
+        case 'congenerals':
+            const congeneral = await Congeneral.findById(id);
+            if (!congeneral) {
+                console.log('No es un congenerals por id');
+                return false;
+            }
+            pathViejo = `./uploads/congenerals/${congeneral.img}`;
+
+            borrarImagen(pathViejo);
+
+            congeneral.img = nombreArchivo;
+            await congeneral.save();
+            return true;
+            break;
 
 
         case 'productos':
@@ -42,40 +58,44 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
             return true;
             break;
 
-        case 'promocions':
-            const promocion = await Promocion.findById(id);
-            if (!promocion) {
-                console.log('No es un promocion por id');
+        case 'galerias':
+            const galeria = await Galeria.findById(id);
+            if (!galeria) {
+                console.log('No es un galeria por id');
                 return false;
             }
-            pathViejo = `./uploads/promocions/${promocion.img}`;
+            pathViejo = `./uploads/galerias/${galeria.img}`;
 
             borrarImagen(pathViejo);
 
-            promocion.img = nombreArchivo;
-            await promocion.save();
+            galeria.img = nombreArchivo;
+            await galeria.save();
             return true;
             break;
 
-        case 'congenerals':
-            const congeneral = await Congeneral.findById(id);
-            if (!congeneral) {
-                console.log('No es un hospital por id');
+        case 'cursos':
+            const curso = await Curso.findById(id);
+            if (!curso) {
+                console.log('No es un curso por id');
                 return false;
             }
-            pathViejo = `./uploads/congenerals/${congeneral.img}`;
+            pathViejo = `./uploads/cursos/${curso.img}`;
 
             borrarImagen(pathViejo);
 
-            congeneral.img = nombreArchivo;
-            await congeneral.save();
+            curso.img = nombreArchivo;
+            await curso.save();
             return true;
             break;
+
+
+
+
 
         case 'marcas':
             const marca = await Marca.findById(id);
             if (!marca) {
-                console.log('No es un hospital por id');
+                console.log('No es un marcas por id');
                 return false;
             }
             pathViejo = `./uploads/marcas/${marca.img}`;
@@ -84,6 +104,21 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
 
             marca.img = nombreArchivo;
             await marca.save();
+            return true;
+            break;
+
+        case 'categorias':
+            const categoria = await Categoria.findById(id);
+            if (!categoria) {
+                console.log('No es un categoria por id');
+                return false;
+            }
+            pathViejo = `./uploads/categorias/${categoria.img}`;
+
+            borrarImagen(pathViejo);
+
+            categoria.img = nombreArchivo;
+            await categoria.save();
             return true;
             break;
 
@@ -102,20 +137,7 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
             return true;
             break;
 
-        case 'galerias':
-            const galeria = await Galeria.findById(id);
-            if (!galeria) {
-                console.log('No es un galeria por id');
-                return false;
-            }
-            pathViejo = `./uploads/galerias/${galeria.img}`;
 
-            borrarImagen(pathViejo);
-
-            galeria.img = nombreArchivo;
-            await galeria.save();
-            return true;
-            break;
 
         case 'ingresos':
             const ingreso = await Ingreso.findById(id);
@@ -162,6 +184,21 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
             return true;
             break;
 
+        case 'promocions':
+            const promocion = await Promocion.findById(id);
+            if (!promocion) {
+                console.log('No es un promocion por id');
+                return false;
+            }
+            pathViejo = `./uploads/promocions/${promocion.img}`;
+
+            borrarImagen(pathViejo);
+
+            promocion.img = nombreArchivo;
+            await promocion.save();
+            return true;
+            break;
+
         case 'sliders':
             const slider = await Slider.findById(id);
             if (!slider) {
@@ -177,20 +214,9 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
             return true;
             break;
 
-        case 'cursos':
-            const curso = await Curso.findById(id);
-            if (!curso) {
-                console.log('No es un curso por id');
-                return false;
-            }
-            pathViejo = `./uploads/cursos/${curso.img}`;
 
-            borrarImagen(pathViejo);
 
-            curso.img = nombreArchivo;
-            await curso.save();
-            return true;
-            break;
+
     }
 
 };

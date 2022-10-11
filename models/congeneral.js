@@ -18,6 +18,10 @@ var CongeneralSchema = Schema({
     youtube: { type: String, required: false },
     twitter: { type: String, required: false },
     language: { type: String, required: false },
+    modoPaypal: { type: Boolean, required: true },
+    sandbox: { type: String, required: false },
+    clientePaypal: { type: String, required: false },
+    rapidapiKey: { type: String, required: false },
 });
 
 module.exports = mongoose.model('congeneral', CongeneralSchema);

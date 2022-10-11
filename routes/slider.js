@@ -27,7 +27,6 @@ router.post('/', [
 
 router.put('/:id', [
     validarJWT,
-    check('img', 'La imagen es necesario').not().isEmpty(),
     validarCampos
 ], actualizarSlider);
 

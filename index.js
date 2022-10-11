@@ -85,6 +85,7 @@ app.use('/api/contactos', require('./routes/contacto'));
 app.use('/api/cupons', require('./routes/cupon'));
 app.use('/api/direccions', require('./routes/direccion'));
 app.use('/api/galerias', require('./routes/galeria'));
+app.use('/api/galeriavideos', require('./routes/galeriavideo'));
 app.use('/api/ingresos', require('./routes/ingreso'));
 app.use('/api/postals', require('./routes/postal'));
 app.use('/api/tickets', require('./routes/ticket'));

@@ -50,7 +50,7 @@ const fileUpload = (req, res = response) => {
     //mover la imagen
     file.mv(path, (err) => {
         if (err) {
-            console.log(err)
+            // console.log(err)
             return res.status(500).json({
                 ok: false,
                 msg: 'Error al mover la imagen'

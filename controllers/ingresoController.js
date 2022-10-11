@@ -72,7 +72,7 @@ const crearIngreso = async(req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({
             ok: false,
             msg: 'Hable con el admin'
@@ -248,12 +248,35 @@ function listar(req, res) {
 
             Ingreso.find({ _id: search }).populate('user').exec((err, data) => {
 
-                console.log(data);
+                // console.log(data);
                 res.status(200).send({ data: data });
 
             });
         }
     }
+
+
+}
+
+function get_img(req, res) {
+    var img = req.params['img'];
+
+
+    if (img != "null" || img != 'undefined') {
+        fs.stat('./uploads/ingresos/factura/' + img, function(err) {
+            if (!err) {
+                let path_img = './uploads/ingresos/facturas/' + img;
+                res.status(200).sendFile(path.resolve(path_img));
+            } else if (err.code === 'ENOENT') {
+                let path_img = './uploads/ingresos/no-image.jpg';
+                res.status(200).sendFile(path.resolve(path_img));
+            }
+        });
+    } else {
+        let path_img = './uploads/ingresos/no-image.jpg';
+        res.status(200).sendFile(path.resolve(path_img));
+    }
+
 }
 
 
@@ -265,5 +288,6 @@ module.exports = {
     getIngreso,
     initData,
     listar,
-    detalle
+    detalle,
+    get_img
 };

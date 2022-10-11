@@ -67,7 +67,7 @@ const crearVenta = async(req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({
             ok: false,
             msg: 'Hable con el admin'
@@ -279,7 +279,8 @@ function obtener_data_cancelacion(req, res) {
                 res.status(500).send({ cancelacion: false });
             }
         } else {
-            console.log(err);
+            // console.log(err);
+            res.status(500).send({ error: err });
         }
     });
 }
@@ -335,7 +336,7 @@ function listar_admin(req, res) {
     var orden = req.params['orden'];
 
     if (tipo == 'null' && search == 'null') {
-        console.log(orden);
+        // console.log(orden);
 
         if (orden == 'fecha+') {
             Venta.find().sort({ createdAt: -1 }).populate('user').exec((err, data) => {
@@ -474,7 +475,7 @@ function update_enviado(req, res) {
 function listar_ventas_dashboard(req, res) {
     Venta.find().exec((err, data) => {
         if (data) {
-            console.log(data);
+            // console.log(data);
             res.status(200).send({ data: data });
         }
     });

@@ -32,15 +32,15 @@ router.put('/:id', [
     validarCampos
 ], actualizarUsuario);
 
-router.put('/:id', [
-    validarJWT,
-    validarAdminRole,
-    validarAdminRoleOMismoUsuario,
-    check('first_name', 'el nombre es obligatorio').not().isEmpty(),
-    check('email', 'el email es obligatorio').isEmail(),
-    check('role', 'el role es obligatorio').not().isEmpty(),
-    validarCampos
-], actualizarUAdmin);
+// router.put('/:id', [
+//     validarJWT,
+//     validarAdminRole,
+//     validarAdminRoleOMismoUsuario,
+//     check('first_name', 'el nombre es obligatorio').not().isEmpty(),
+//     check('email', 'el email es obligatorio').isEmail(),
+//     check('role', 'el role es obligatorio').not().isEmpty(),
+//     validarCampos
+// ], actualizarUAdmin);
 
 router.delete('/:id', [validarJWT, validarAdminRole], borrarUsuario);
 

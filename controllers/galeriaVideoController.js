@@ -1,13 +1,13 @@
 const { response } = require('express');
-const Galeria = require('../models/galeria');
+const GaleriaVideo = require('../models/galeriavideos');
 
 const getGalerias = async(req, res) => {
 
-    const galerias = await Galeria.find().populate('imagen producto');
+    const galeriavideos = await GaleriaVideo.find().populate('video curso');
 
     res.json({
         ok: true,
-        galerias
+        galeriavideos
     });
 };
 
@@ -16,8 +16,8 @@ const getGaleria = async(req, res) => {
     const id = req.params.id;
     const uid = req.uid;
 
-    Galeria.findById(id)
-        .exec((err, galeria) => {
+    GaleriaVideo.findById(id)
+        .exec((err, galeriavideo) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
@@ -25,7 +25,7 @@ const getGaleria = async(req, res) => {
                     errors: err
                 });
             }
-            if (!galeria) {
+            if (!galeriavideo) {
                 return res.status(400).json({
                     ok: false,
                     mensaje: 'El Galeria con el id ' + id + 'no existe',
@@ -35,16 +35,10 @@ const getGaleria = async(req, res) => {
             }
             res.status(200).json({
                 ok: true,
-                galeria: galeria
+                galeriavideo: galeriavideo
             });
         });
 
-
-    // res.json({
-    //     ok: true,
-    //     categoria
-    //     //uid: req.uid
-    // });
 };
 
 
@@ -55,24 +49,24 @@ const actualizarGaleria = async(req, res) => {
 
     try {
 
-        const galeria = await Galeria.findById(id);
-        if (!galeria) {
+        const galeriavideo = await GaleriaVideo.findById(id);
+        if (!galeriavideo) {
             return res.status(500).json({
                 ok: false,
-                msg: 'galeria no encontrado por el id'
+                msg: 'video no encontrado por el id'
             });
         }
 
-        const cambiosGaleria = {
+        const cambiosVideo = {
             ...req.body,
             usuario: uid
         }
 
-        const galeriaActualizado = await Galeria.findByIdAndUpdate(id, cambiosGaleria, { new: true });
+        const videoActualizado = await GaleriaVideo.findByIdAndUpdate(id, cambiosVideo, { new: true });
 
         res.json({
             ok: true,
-            galeriaActualizado
+            videoActualizado
         });
 
     } catch (error) {
@@ -91,15 +85,15 @@ const borrarGaleria = async(req, res) => {
 
     try {
 
-        const galeria = await Galeria.findById(id);
-        if (!galeria) {
+        const galeriavideo = await GaleriaVideo.findById(id);
+        if (!galeriavideo) {
             return res.status(500).json({
                 ok: false,
                 msg: 'Galeria no encontrado por el id'
             });
         }
 
-        await Galeria.findByIdAndDelete(id);
+        await GaleriaVideo.findByIdAndDelete(id);
 
         res.json({
             ok: true,
@@ -116,29 +110,29 @@ const borrarGaleria = async(req, res) => {
 
 
 
-function findByProduct(req, res) {
+function findByCurso(req, res) {
     var id = req.params['id'];
 
     console.log(id);
     if (id == 'null') {
-        Galeria.find().exec((err, galeria_data) => {
+        GaleriaVideo.find().exec((err, galeria_data) => {
             if (err) {
                 res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
             } else {
                 if (galeria_data) {
-                    res.status(200).send({ galeria: galeria_data });
+                    res.status(200).send({ galeriavideo: galeria_data });
                 } else {
                     res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
                 }
             }
         });
     } else {
-        Galeria.find({ producto: id }).exec((err, galeria_data) => {
+        GaleriaVideo.find({ curso: id }).exec((err, galeria_data) => {
             if (err) {
                 res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
             } else {
                 if (galeria_data) {
-                    res.status(200).send({ galeria: galeria_data });
+                    res.status(200).send({ galeriavideo: galeria_data });
                 } else {
                     res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
                 }
@@ -148,32 +142,64 @@ function findByProduct(req, res) {
 
 }
 
-function registro(req, res, next) {
-    var params = req.body;
+const crearVideo = async(req, res) => {
 
-    if (req.files.imagenes) {
+    const uid = req.uid;
+    const galeriavideo = new GaleriaVideo({
+        usuario: uid,
+        ...req.body
+    });
 
-        req.files.imagenes.forEach((elem, index) => {
-            // console.log(elem);
+    try {
 
-            var imagen_path = elem.path;
-            var name = imagen_path.split('\\');
-            var imagen_name = name[2];
+        const galeriaDB = await galeriavideo.save();
 
-            var galeria = new Galeria();
-            galeria.producto = params.producto;
-            galeria.imagen = imagen_name;
-
-
-            galeria.save((err, img_save) => {
-                if (err) {
-                    res.status(500).send({ error: err });
-                }
-            });
-
+        res.json({
+            ok: true,
+            galeriavideo: galeriaDB
         });
-        res.status(200).send({ message: "Registrado" });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el admin'
+        });
     }
+
+
+};
+
+function desactivar(req, res) {
+    var id = req.params['id'];
+
+    GaleriaVideo.findByIdAndUpdate({ _id: id }, { status: 'Desactivado' }, (err, galeria_data) => {
+        if (err) {
+            res.status(500).send({ message: err });
+        } else {
+            if (galeria_data) {
+                res.status(200).send({ galeriavideo: galeria_data });
+            } else {
+                res.status(403).send({ message: 'No se actualizó el video, vuelva a intentar nuevamente.' });
+            }
+        }
+    })
+}
+
+function activar(req, res) {
+    var id = req.params['id'];
+    // console.log(id);
+    GaleriaVideo.findByIdAndUpdate({ _id: id }, { status: 'Activo' }, (err, galeria_data) => {
+        if (err) {
+            res.status(500).send({ message: err });
+        } else {
+            if (galeria_data) {
+                res.status(200).send({ galeriavideo: galeria_data });
+            } else {
+                res.status(403).send({ message: 'No se actualizó el video, vuelva a intentar nuevamente.' });
+            }
+        }
+    })
 }
 
 
@@ -183,6 +209,8 @@ module.exports = {
     actualizarGaleria,
     borrarGaleria,
     getGaleria,
-    findByProduct,
-    registro
+    findByCurso,
+    crearVideo,
+    desactivar,
+    activar
 };
