@@ -11,7 +11,7 @@ const getUsuarios = async(req, res) => {
 
     const [usuarios, total] = await Promise.all([
         Usuario
-        .find({}, 'nombre email role google img') //esto ultimo filtra el resultado
+        .find({}, 'first_name email role google img') //esto ultimo filtra el resultado
         .skip(desde)
         .limit(5),
 
@@ -53,14 +53,7 @@ const getUsuario = async(req, res) => {
                 ok: true,
                 usuario: usuario
             });
-        })
-
-
-    res.json({
-        ok: true,
-        usuario,
-        //uid: req.uid
-    });
+        });
 };
 
 const crearUsuarios = async(req, res = response) => {

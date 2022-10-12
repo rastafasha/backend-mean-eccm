@@ -3,7 +3,7 @@ const Congeneral = require('../models/congeneral');
 
 const getCongenerals = async(req, res) => {
 
-    const congenerals = await Congeneral.find().populate('titulo logo favicon');
+    const congenerals = await Congeneral.find().populate('titulo img');
 
     res.json({
         ok: true,
@@ -143,75 +143,6 @@ const borrarCongeneral = async(req, res) => {
 
 
 
-function slider(req, res) {
-    var data = req.body;
-
-    var id = req.params['id'];
-    var banner = req.params['banner'];
-    console.log(id);
-    var img_banner = req.files.imagen;
-
-    if (img_banner == null) {
-        Slider.findByIdAndUpdate({ _id: id }, { titulo_uno: data.titulo_uno, titulo_dos: data.titulo_dos, subtitulo: data.subtitulo, estado: data.estado }, (err, data) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
-            } else {
-                if (data) {
-                    res.status(200).send({ data: data });
-                } else {
-                    res.status(500).send({ message: 'No se actualizó la configuración, vuelva a intentar nuevamente.' });
-                }
-            }
-        })
-    } else if (img_banner) {
-
-        fs.stat('./uploads/configuraciones/' + banner, function(err) {
-            if (!err) {
-                fs.unlink('./uploads/configuraciones/' + banner, (err) => {
-                    if (err) throw err;
-                });
-            } else {
-                console.log(banner);
-
-            }
-        });
-
-        var banner_path = req.files.imagen.path;
-        var name = banner_path.split('\\');
-        var banner_banner = name[2];
-
-        Slider.findByIdAndUpdate({ _id: id }, { titulo_uno: data.titulo_uno, titulo_dos: data.titulo_dos, subtitulo: data.subtitulo, estado: data.estado, imagen: banner_banner }, (err, data) => {
-            if (err) {
-                res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
-            } else {
-                if (data) {
-                    res.status(200).send({ data: data });
-                } else {
-                    res.status(500).send({ message: 'No se actualizó la configuración, vuelva a intentar nuevamente.' });
-                }
-            }
-        })
-    }
-}
-
-
-function getSlider(req, res) {
-    Slider.find().exec((err, data) => {
-        if (data) {
-            res.status(200).send({ data: data });
-        }
-    });
-}
-
-function getSliderOne(req, res) {
-    var id = req.params['id'];
-    Slider.findOne({ _id: id }).exec((err, data) => {
-        if (data) {
-            res.status(200).send({ data: data });
-        }
-    });
-}
 
 
 module.exports = {
@@ -220,7 +151,4 @@ module.exports = {
     actualizarCongeneral,
     borrarCongeneral,
     getCongeneral,
-    slider,
-    getSlider,
-    getSliderOne
 };

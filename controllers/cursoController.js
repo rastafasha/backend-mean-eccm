@@ -1,6 +1,7 @@
 const { response } = require('express');
 const Curso = require('../models/curso');
 const Categoria = require('../models/categoria');
+const borrarImagen = require('../helpers/actualizar-imagen')
 const fs = require('fs');
 
 
@@ -126,6 +127,8 @@ const borrarCurso = async(req, res) => {
         }
 
         await Curso.findByIdAndDelete(id);
+
+
 
         res.json({
             ok: true,

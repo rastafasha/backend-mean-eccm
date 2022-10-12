@@ -9,7 +9,8 @@ const fileUpload = (req, res = response) => {
     const tipo = req.params.tipo;
     const id = req.params.id;
 
-    const tiposValidos = ['productos', 'marcas', 'categorias', 'galerias', 'promocions',
+    const tiposValidos = [
+        'productos', 'marcas', 'categorias', 'galerias', 'promocions',
         'congenerals', 'usuarios', 'ingresos', 'blogs', 'pages', 'cursos', 'sliders'
     ];
     if (!tiposValidos.includes(tipo)) {

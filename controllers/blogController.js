@@ -4,9 +4,6 @@ const Categoria = require('../models/categoria');
 const fs = require('fs');
 
 
-
-
-
 const getBlogs = async(req, res) => {
 
     const blogs = await Blog.find().populate('titulo img categoria');
@@ -103,6 +100,7 @@ const actualizarBlog = async(req, res) => {
         });
 
     } catch (error) {
+
         res.status(500).json({
             ok: false,
             msg: 'Error hable con el admin'

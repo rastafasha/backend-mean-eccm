@@ -10,9 +10,6 @@ const {
     actualizarCongeneral,
     borrarCongeneral,
     getCongeneral,
-    slider,
-    getSlider,
-    getSliderOne
 } = require('../controllers/congeneralController');
 const { validarJWT } = require('../middlewares/validar-jwt');
 const { check } = require('express-validator');
@@ -37,10 +34,6 @@ router.delete('/:id', validarJWT, borrarCongeneral);
 router.get('/:id', getCongeneral);
 router.get('/obtener', getCongenerals);
 
-
-router.put('/slider/update/:id/:banner?', slider);
-router.get('/slider/obtener', getSlider);
-router.get('/slider/one/:id', getSliderOne);
 
 
 module.exports = router;

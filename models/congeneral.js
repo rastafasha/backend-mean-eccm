@@ -3,8 +3,8 @@ var Schema = mongoose.Schema;
 
 var CongeneralSchema = Schema({
     titulo: { type: String, required: true },
-    logo: { type: String, required: false },
-    favicon: { type: String, required: false },
+    img: { type: String, required: false },
+    // favicon: { type: String, required: false },
     cr: { type: String, required: true },
     telefono_uno: { type: String, required: true },
     telefono_dos: { type: String, required: true },

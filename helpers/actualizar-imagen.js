@@ -222,5 +222,6 @@ const actualizarImagen = async(tipo, id, nombreArchivo) => {
 };
 
 module.exports = {
-    actualizarImagen
+    actualizarImagen,
+    borrarImagen
 };
