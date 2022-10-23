@@ -9,7 +9,8 @@ const {
     getSelector,
     crearSelector,
     actualizarSelector,
-    borrarSelector
+    borrarSelector,
+    findByProduct
 } = require('../controllers/selectorController');
 const { validarJWT } = require('../middlewares/validar-jwt');
 const { check } = require('express-validator');
@@ -32,6 +33,8 @@ router.put('/:id', [
 router.delete('/:id', validarJWT, borrarSelector);
 
 router.get('/:id', validarJWT, getSelector);
+
+router.get('/selector_producto/find/:id?', findByProduct);
 
 
 module.exports = router;

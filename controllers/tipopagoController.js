@@ -39,12 +39,6 @@ const getPayment = async(req, res) => {
             });
         });
 
-
-    // res.json({
-    //     ok: true,
-    //     categoria
-    //     //uid: req.uid
-    // });
 };
 
 const crearPayment = async(req, res) => {
@@ -141,6 +135,21 @@ const borrarPayment = async(req, res) => {
     }
 };
 
+const listarPorUsuario = (req, res) => {
+    var id = req.params['id'];
+    Payment.find({ user: id }, (err, data_payment) => {
+        if (!err) {
+            if (data_payment) {
+                res.status(200).send({ payments: data_payment });
+            } else {
+                res.status(500).send({ error: err });
+            }
+        } else {
+            res.status(500).send({ error: err });
+        }
+    });
+}
+
 
 
 module.exports = {
@@ -149,4 +158,5 @@ module.exports = {
     actualizarPayment,
     borrarPayment,
     getPayment,
+    listarPorUsuario
 };

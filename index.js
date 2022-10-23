@@ -4,12 +4,13 @@ const { dbConnection } = require('./database/config');
 const cors = require('cors');
 const path = require('path');
 
+
 //crear server de express
 const app = express();
 
 //chat
 var server = require('http').createServer(app);
-// var io = require('socket.io')(server);
+var io = require('socket.io')(server);
 var io = require('socket.io').listen(server);
 var authenticate = false;
 io.on('connection', function(socket) {
@@ -42,11 +43,10 @@ io.on('connection', function(socket) {
 //cors
 app.use(cors());
 app.use((req, res, next) => {
-    res.header('Content-Type: application/json');
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Access-Control-Allow-Request-Method');
-    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-    res.header('Allow', 'GET, PUT, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
     next();
 });
 
@@ -62,8 +62,6 @@ app.use(express.static('public'));
 
 //rutas
 app.use('/api/usuarios', require('./routes/usuarios'));
-// app.use('/api/hospitales', require('./routes/hospitales'));
-// app.use('/api/medicos', require('./routes/medicos'));
 app.use('/api/login', require('./routes/auth'));
 app.use('/api/todo', require('./routes/busquedas'));
 app.use('/api/uploads', require('./routes/uploads'));

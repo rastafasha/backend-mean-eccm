@@ -1,5 +1,7 @@
 const { response } = require('express');
 const Ticket = require('../models/ticket');
+var Mensaje = require('../models/mensaje');
+
 
 const getTickets = async(req, res) => {
 
@@ -38,14 +40,22 @@ const getTicket = async(req, res) => {
                 ticket: ticket
             });
         });
-
-
-    // res.json({
-    //     ok: true,
-    //     categoria
-    //     //uid: req.uid
-    // });
 };
+
+const listarTicketPorVenta = (req, res) => {
+    var id = req.params['id'];
+    Ticket.find({ venta: id }, (err, data_ticket) => {
+        if (!err) {
+            if (data_ticket) {
+                res.status(200).send({ tickets: data_ticket });
+            } else {
+                res.status(500).send({ error: err });
+            }
+        } else {
+            res.status(500).send({ error: err });
+        }
+    });
+}
 
 const crearTicket = async(req, res) => {
 
@@ -141,7 +151,7 @@ const borrarTicket = async(req, res) => {
     }
 };
 
-function send(req, res) {
+const send = (req, res) => {
     var data = req.body;
 
     var mensaje = new Mensaje();
@@ -196,7 +206,7 @@ function send(req, res) {
 }
 
 
-function dataMessenger(req, res) {
+const dataMessenger = (req, res) => {
 
     var de = req.params['de'];
     var para = req.params['para'];
@@ -241,4 +251,5 @@ module.exports = {
     getTicket,
     dataMessenger,
     send,
+    listarTicketPorVenta
 };

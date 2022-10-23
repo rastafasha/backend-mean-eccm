@@ -40,37 +40,27 @@ const getSelector = async(req, res) => {
         });
 
 
-    // res.json({
-    //     ok: true,
-    //     color
-    //     //uid: req.uid
-    // });
 };
 
 const crearSelector = async(req, res) => {
 
-    const uid = req.uid;
-    const selector = new Selector({
-        usuario: uid,
-        ...req.body
+    let data = req.body;
+
+    var selector = new Selector;
+    selector.titulo = data.titulo;
+    selector.producto = data.producto;
+    selector.save((err, selector_data) => {
+        if (!err) {
+            if (selector_data) {
+                res.status(200).send({ selector: selector_data });
+            } else {
+                res.status(500).send({ error: err });
+            }
+        } else {
+            res.status(500).send({ error: err });
+        }
     });
 
-    try {
-
-        const selectorDB = await selector.save();
-
-        res.json({
-            ok: true,
-            selector: selectorDB
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Hable con el admin'
-        });
-    }
 
 
 };
@@ -142,6 +132,39 @@ const borrarSelector = async(req, res) => {
 };
 
 
+const findByProduct = (req, res) => {
+    var id = req.params['id'];
+
+    console.log(id);
+    if (id == 'null') {
+        Selector.find().exec((err, selector_data) => {
+            if (err) {
+                res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
+            } else {
+                if (selector_data) {
+                    res.status(200).send({ selector: selector_data });
+                } else {
+                    res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
+                }
+            }
+        });
+    } else {
+        Selector.find({ producto: id }).exec((err, selector_data) => {
+            if (err) {
+                res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
+            } else {
+                if (selector_data) {
+                    res.status(200).send({ selector: selector_data });
+                } else {
+                    res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
+                }
+            }
+        });
+    }
+
+};
+
+
 
 module.exports = {
     getSelectors,
@@ -149,4 +172,5 @@ module.exports = {
     actualizarSelector,
     borrarSelector,
     getSelector,
+    findByProduct
 };

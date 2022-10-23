@@ -131,6 +131,38 @@ const borrarColor = async(req, res) => {
     }
 };
 
+const findByProduct = (req, res) => {
+    var id = req.params['id'];
+
+    console.log(id);
+    if (id == 'null') {
+        Color.find().exec((err, color_data) => {
+            if (err) {
+                res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
+            } else {
+                if (color_data) {
+                    res.status(200).send({ color: color_data });
+                } else {
+                    res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
+                }
+            }
+        });
+    } else {
+        Color.find({ producto: id }).exec((err, color_data) => {
+            if (err) {
+                res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
+            } else {
+                if (color_data) {
+                    res.status(200).send({ color: color_data });
+                } else {
+                    res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
+                }
+            }
+        });
+    }
+
+};
+
 
 
 module.exports = {
@@ -138,5 +170,6 @@ module.exports = {
     crearColor,
     actualizarColor,
     borrarColor,
-    getColor
+    getColor,
+    findByProduct
 };

@@ -41,12 +41,6 @@ const getVenta = async(req, res) => {
             });
         });
 
-
-    // res.json({
-    //     ok: true,
-    //     categoria
-    //     //uid: req.uid
-    // });
 };
 
 const crearVenta = async(req, res) => {
@@ -144,20 +138,6 @@ const borrarVenta = async(req, res) => {
 };
 
 
-function evaluar_cancelacion(req, res) {
-    const id = req.params.id;
-    // var id = req.params['id'];
-    Cancelacion.find({ venta: id }, (err, solicitud) => {
-        if (solicitud.length != 0) {
-            res.status(200).send({ data: true });
-        } else {
-            res.status(200).send({ data: false });
-        }
-    })
-
-}
-
-
 function data_detalle(req, res) {
     var id = req.params['id'];
     Venta.findById({ _id: id }).populate('user').exec((err, data_venta) => {
@@ -186,16 +166,70 @@ function data_detalle(req, res) {
     });
 }
 
-function finalizar(req, res) {
+
+const listarVentaPorUsuario = (req, res) => {
     var id = req.params['id'];
-    Venta.findByIdAndUpdate({ _id: id }, { estado: 'Finalizado' }, (err, venta_data) => {
-        if (venta_data) {
-            res.status(200).send({ venta: venta_data });
+    Venta.find({ user: id }, (err, data_venta) => {
+        if (!err) {
+            if (data_venta) {
+                res.status(200).send({ ventas: data_venta });
+            } else {
+                res.status(500).send({ error: err });
+            }
         } else {
             res.status(500).send({ error: err });
         }
-    })
+    });
 }
+
+//Cancelaciones
+
+
+
+const getCancelacion = async(req, res) => {
+
+    const id = req.params.id;
+    const uid = req.uid;
+
+    Cancelacion.findById(id)
+        .exec((err, cancelacion) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'Error al buscar cancelacion',
+                    errors: err
+                });
+            }
+            if (!cancelacion) {
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: 'El cancelacion con el id ' + id + 'no existe',
+                    errors: { message: 'No existe un cancelacion con ese ID' }
+                });
+
+            }
+            res.status(200).json({
+                ok: true,
+                cancelacion: cancelacion
+            });
+        });
+
+};
+
+function evaluar_cancelacion(req, res) {
+    const id = req.params.id;
+    // var id = req.params['id'];
+    Cancelacion.find({ venta: id }, (err, solicitud) => {
+        if (solicitud.length != 0) {
+            res.status(200).send({ data: true });
+        } else {
+            res.status(200).send({ data: false });
+        }
+    })
+
+}
+
+
 
 
 
@@ -225,6 +259,8 @@ function cancelar(req, res) {
         });
 }
 
+
+
 function listar_cancelaciones(req, res) {
     var wr = req.params['wr'];
 
@@ -241,29 +277,6 @@ function listar_cancelaciones(req, res) {
             }
         });
     }
-}
-
-function evaluar_orden_coment(req, res) {
-    var user = req.params['user'];
-    var producto = req.params['producto'];
-
-    Detalle.find({ user: user, producto: producto }).exec((err, data) => {
-
-        if (data.length != 0) {
-            res.status(200).send({ data: true });
-        } else {
-            res.status(200).send({ data: false });
-        }
-    });
-}
-
-function get_solicitud(req, res) {
-    var id = req.params['id'];
-    Cancelacion.findById({ _id: id }).populate('user').populate('venta').exec((err, data_cancelacion) => {
-        if (data_cancelacion) {
-            res.status(200).send({ cancelacion: data_cancelacion });
-        }
-    });
 }
 
 function obtener_data_cancelacion(req, res) {
@@ -285,42 +298,25 @@ function obtener_data_cancelacion(req, res) {
     });
 }
 
-function reembolsar(req, res) {
+const listarCancelacionPorUsuario = (req, res) => {
     var id = req.params['id'];
-    var idticket = req.params['idticket'];
-    Venta.findByIdAndUpdate({ _id: id }, { estado: 'Reembolsado' }, (err, venta_data) => {
-        if (venta_data) {
-            Cancelacion.findByIdAndUpdate({ _id: idticket }, { estado: 'Reembolsado' }, (err, venta_data) => {
-                if (venta_data) {
-                    res.status(200).send({ venta_data: venta_data });
-                } else {
-                    res.status(500).send({ error: err });
-                }
-            })
+    Cancelacion.find({ user: id }, (err, data_cancelacion) => {
+        if (!err) {
+            if (data_cancelacion) {
+                res.status(200).send({ cancelacion: data_cancelacion });
+            } else {
+                res.status(500).send({ error: err });
+            }
         } else {
             res.status(500).send({ error: err });
         }
-    })
+    });
 }
 
-function denegar(req, res) {
-    var id = req.params['id'];
-    var idticket = req.params['idticket'];
-    Venta.findByIdAndUpdate({ _id: id }, { estado: 'Venta en proceso' }, (err, venta_data) => {
-        if (venta_data) {
-            Cancelacion.findByIdAndUpdate({ _id: idticket }, { estado: 'Denegado' }, (err, venta_data) => {
-                if (venta_data) {
-                    res.status(200).send({ venta_data: venta_data });
-                } else {
-                    res.status(500).send({ error: err });
-                }
-            })
-        } else {
-            res.status(500).send({ error: err });
-        }
-    })
-}
 
+
+
+//admin
 
 function init_data_admin(req, res) {
     Venta.find().sort({ createdAt: -1 }).populate('user').exec((err, data) => {
@@ -449,6 +445,45 @@ function listar_admin(req, res) {
     }
 }
 
+//otros
+
+
+
+function finalizar(req, res) {
+    var id = req.params['id'];
+    Venta.findByIdAndUpdate({ _id: id }, { estado: 'Finalizado' }, (err, venta_data) => {
+        if (venta_data) {
+            res.status(200).send({ venta: venta_data });
+        } else {
+            res.status(500).send({ error: err });
+        }
+    })
+}
+
+
+function evaluar_orden_coment(req, res) {
+    var user = req.params['user'];
+    var producto = req.params['producto'];
+
+    Detalle.find({ user: user, producto: producto }).exec((err, data) => {
+
+        if (data.length != 0) {
+            res.status(200).send({ data: true });
+        } else {
+            res.status(200).send({ data: false });
+        }
+    });
+}
+
+function get_solicitud(req, res) {
+    var id = req.params['id'];
+    Cancelacion.findById({ _id: id }).populate('user').populate('venta').exec((err, data_cancelacion) => {
+        if (data_cancelacion) {
+            res.status(200).send({ cancelacion: data_cancelacion });
+        }
+    });
+}
+
 function set_track(req, res) {
     var id = req.params['id'];
     var data = req.body;
@@ -491,6 +526,29 @@ function detalles_hoy(req, res) {
     });
 }
 
+function denegar(req, res) {
+    var id = req.params['id'];
+    var idticket = req.params['idticket'];
+    Venta.findByIdAndUpdate({ _id: id }, { estado: 'Venta en proceso' }, (err, venta_data) => {
+        if (venta_data) {
+            Cancelacion.findByIdAndUpdate({ _id: idticket }, { estado: 'Denegado' }, (err, venta_data) => {
+                if (venta_data) {
+                    res.status(200).send({ venta_data: venta_data });
+                } else {
+                    res.status(500).send({ error: err });
+                }
+            })
+        } else {
+            res.status(500).send({ error: err });
+        }
+    })
+}
+
+
+
+
+
+
 
 module.exports = {
     getVentas,
@@ -505,7 +563,6 @@ module.exports = {
     cancelar,
     listar_cancelaciones,
     get_solicitud,
-    reembolsar,
     obtener_data_cancelacion,
     evaluar_orden_coment,
     denegar,
@@ -513,5 +570,8 @@ module.exports = {
     set_track,
     update_enviado,
     listar_ventas_dashboard,
-    detalles_hoy
+    detalles_hoy,
+    listarVentaPorUsuario,
+    listarCancelacionPorUsuario,
+    getCancelacion,
 };

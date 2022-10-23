@@ -8,10 +8,9 @@ const {
     getCarritos,
     crearCarrito,
     actualizarCarrito,
-    borrarCarrito,
-    getCarrito,
     previewCarrito,
-    removeCarrito
+    removeCarrito,
+    listarPorUsuario
 
 } = require('../controllers/carritoController');
 const { validarJWT } = require('../middlewares/validar-jwt');
@@ -19,6 +18,7 @@ const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 
 router.get('/', getCarritos);
+router.get('/carritouser/:id', listarPorUsuario);
 
 router.post('/', [
     validarJWT,
@@ -32,9 +32,6 @@ router.put('/:id', [
     validarCampos
 ], actualizarCarrito);
 
-router.delete('/:id', borrarCarrito);
-
-router.get('/:id', getCarrito);
 
 router.get('/limit/data/:id', previewCarrito);
 router.delete('/delete/:id', removeCarrito);

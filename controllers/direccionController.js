@@ -11,40 +11,22 @@ const getDireccions = async(req, res) => {
     });
 };
 
-const getDireccion = async(req, res) => {
+const getDireccion = (req, res) => {
 
-    const id = req.params.id;
-    const uid = req.uid;
-
-    Direccion.findById(id)
-        .exec((err, direccion) => {
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    mensaje: 'Error al buscar direccion',
-                    errors: err
-                });
+    var id = req.params['id'];
+    Direccion.findById({ _id: id }, (err, data_direccion) => {
+        if (!err) {
+            if (data_direccion) {
+                res.status(200).send({ direccion: data_direccion });
+            } else {
+                res.status(500).send({ error: err });
             }
-            if (!direccion) {
-                return res.status(400).json({
-                    ok: false,
-                    mensaje: 'El direccion con el id ' + id + 'no existe',
-                    errors: { message: 'No existe un direccion con ese ID' }
-                });
-
-            }
-            res.status(200).json({
-                ok: true,
-                direccion: direccion
-            });
-        });
+        } else {
+            res.status(500).send({ error: err });
+        }
+    });
 
 
-    // res.json({
-    //     ok: true,
-    //     categoria
-    //     //uid: req.uid
-    // });
 };
 
 const crearDireccion = async(req, res) => {
@@ -141,6 +123,21 @@ const borrarDireccion = async(req, res) => {
     }
 };
 
+const listarPorUsuario = (req, res) => {
+    var id = req.params['id'];
+    Direccion.find({ user: id }, (err, data_direccion) => {
+        if (!err) {
+            if (data_direccion) {
+                res.status(200).send({ direcciones: data_direccion });
+            } else {
+                res.status(500).send({ error: err });
+            }
+        } else {
+            res.status(500).send({ error: err });
+        }
+    });
+}
+
 
 
 module.exports = {
@@ -149,4 +146,5 @@ module.exports = {
     actualizarDireccion,
     borrarDireccion,
     getDireccion,
+    listarPorUsuario
 };

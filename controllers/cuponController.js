@@ -44,12 +44,6 @@ const getCupon = async(req, res) => {
             });
         });
 
-
-    // res.json({
-    //     ok: true,
-    //     color
-    //     //uid: req.uid
-    // });
 };
 
 const crearCupon = async(req, res) => {

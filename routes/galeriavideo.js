@@ -20,17 +20,15 @@ const { validarCampos } = require('../middlewares/validar-campos');
 
 router.get('/', getGalerias);
 
+router.get('/:id', getGaleria);
 
-
-router.post('/galeria/crear', crearVideo);
-
-router.post('/', [
+router.post('/galeria/crear', [
     validarJWT,
     check('video', 'El video es necesario').not().isEmpty(),
     validarCampos
 ], crearVideo);
 
-router.put('/:idcurso/:id', [
+router.put('/:id', [
     validarJWT,
     check('video', 'El video es necesario').not().isEmpty(),
     validarCampos
@@ -38,9 +36,9 @@ router.put('/:idcurso/:id', [
 
 router.delete('/:id', validarJWT, borrarGaleria);
 
-router.get('/:id', getGaleria);
 
-router.get('/galeria_curso/find/:id?', findByCurso);
+
+router.get('/galeria_curso/:id?', findByCurso);
 
 router.get('/curso_admin/admin/desactivar/:id', validarJWT, desactivar);
 router.get('/curso_admin/admin/activar/:id', validarJWT, activar);

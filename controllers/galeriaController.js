@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { actualizarImagen } = require('../helpers/actualizar-imagen');
 const Galeria = require('../models/galeria');
 
 const getGalerias = async(req, res) => {
@@ -40,11 +41,6 @@ const getGaleria = async(req, res) => {
         });
 
 
-    // res.json({
-    //     ok: true,
-    //     categoria
-    //     //uid: req.uid
-    // });
 };
 
 
@@ -57,6 +53,7 @@ const actualizarGaleria = async(req, res) => {
 
         const galeria = await Galeria.findById(id);
         if (!galeria) {
+            actualizarImagen();
             return res.status(500).json({
                 ok: false,
                 msg: 'galeria no encontrado por el id'
@@ -69,6 +66,8 @@ const actualizarGaleria = async(req, res) => {
         }
 
         const galeriaActualizado = await Galeria.findByIdAndUpdate(id, cambiosGaleria, { new: true });
+
+
 
         res.json({
             ok: true,
@@ -116,7 +115,7 @@ const borrarGaleria = async(req, res) => {
 
 
 
-function findByProduct(req, res) {
+const findByProduct = (req, res) => {
     var id = req.params['id'];
 
     console.log(id);
@@ -148,32 +147,35 @@ function findByProduct(req, res) {
 
 }
 
-function registro(req, res, next) {
+const registro = (req, res, next) => {
     var params = req.body;
 
-    if (req.files.imagenes) {
+    actualizarImagen();
 
-        req.files.imagenes.forEach((elem, index) => {
-            // console.log(elem);
+    // if (req.files.imagenes) {
 
-            var imagen_path = elem.path;
-            var name = imagen_path.split('\\');
-            var imagen_name = name[2];
+    //     req.files.imagenes.forEach((elem, index) => {
+    //         // console.log(elem);
 
-            var galeria = new Galeria();
-            galeria.producto = params.producto;
-            galeria.imagen = imagen_name;
+    //         var imagen_path = elem.path;
+    //         var name = imagen_path.split('\\');
+    //         var imagen_name = name[2];
+
+    //         var galeria = new Galeria();
+    //         galeria.producto = params.producto;
+    //         galeria.imagen = imagen_name;
 
 
-            galeria.save((err, img_save) => {
-                if (err) {
-                    res.status(500).send({ error: err });
-                }
-            });
 
-        });
-        res.status(200).send({ message: "Registrado" });
-    }
+    //         galeria.save((err, img_save) => {
+    //             if (err) {
+    //                 res.status(500).send({ error: err });
+    //             }
+    //         });
+
+    //     });
+    //     res.status(200).send({ message: "Registrado" });
+    // }
 }
 
 

@@ -144,28 +144,23 @@ function findByCurso(req, res) {
 
 const crearVideo = async(req, res) => {
 
-    const uid = req.uid;
-    const galeriavideo = new GaleriaVideo({
-        usuario: uid,
-        ...req.body
+    let data = req.body;
+
+    var galeriavideo = new GaleriaVideo;
+    galeriavideo.titulo = data.titulo;
+    galeriavideo.curso = data.curso;
+    galeriavideo.video = data.video;
+    galeriavideo.save((err, galeria_data) => {
+        if (!err) {
+            if (galeria_data) {
+                res.status(200).send({ galeriavideo: galeria_data });
+            } else {
+                res.status(500).send({ error: err });
+            }
+        } else {
+            res.status(500).send({ error: err });
+        }
     });
-
-    try {
-
-        const galeriaDB = await galeriavideo.save();
-
-        res.json({
-            ok: true,
-            galeriavideo: galeriaDB
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Hable con el admin'
-        });
-    }
 
 
 };
