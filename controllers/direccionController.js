@@ -17,7 +17,7 @@ const getDireccion = (req, res) => {
     Direccion.findById({ _id: id }, (err, data_direccion) => {
         if (!err) {
             if (data_direccion) {
-                res.status(200).send({ direccion: data_direccion });
+                res.status(200).send({ direccionid: data_direccion });
             } else {
                 res.status(500).send({ error: err });
             }

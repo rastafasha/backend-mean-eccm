@@ -11,8 +11,10 @@ const {
     borrarCategoria,
     getCategoria,
     get_car_slide,
-    list_one
+    list_one,
+    find_by_name
 } = require('../controllers/categoriaController');
+
 const { validarJWT } = require('../middlewares/validar-jwt');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
@@ -38,6 +40,8 @@ router.get('/:id', getCategoria);
 router.get('/slider', get_car_slide);
 
 router.get('/one/:id?', list_one);
+
+router.get('/category_by_nombre/nombre/:nombre', find_by_name);
 
 
 module.exports = router;

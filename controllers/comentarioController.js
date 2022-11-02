@@ -43,31 +43,45 @@ const getComentario = async(req, res) => {
 
 };
 
-const crearComentario = async(req, res) => {
+const crearComentario = (req, res) => {
 
-    const uid = req.uid;
-    const comentario = new Comentario({
-        usuario: uid,
-        ...req.body
+    let data = req.body;
+    console.log(data);
+
+    Comentario.find({ user: data.user, producto: data.producto }, (err, comentario_data) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
+        } else {
+            if (comentario_data.length != 0) {
+                console.log('si');
+                console.log(comentario_data);
+                res.status(500).send({ message: 'Ya emitió un comentario en esta compra.' });
+            } else {
+                console.log('no');
+                console.log(comentario);
+                var comentario = new Comentario;
+                comentario.comentario = data.comentario;
+                comentario.pros = data.pros;
+                comentario.cons = data.cons;
+                comentario.estrellas = data.estrellas;
+                comentario.producto = data.producto;
+                comentario.user = data.user;
+                comentario.save((err, comentario_save) => {
+                    if (!err) {
+                        if (comentario_save) {
+                            res.status(200).send({ comentario: comentario_save });
+                        } else {
+                            c
+                            res.status(500).send({ error: err });
+                        }
+                    } else {
+                        res.status(500).send({ error: err });
+                    }
+                });
+            }
+        }
     });
-
-    try {
-
-        const comentarioDB = await comentario.save();
-
-        res.json({
-            ok: true,
-            comentario: comentarioDB
-        });
-
-    } catch (error) {
-        // console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Hable con el admin'
-        });
-    }
-
 
 };
 

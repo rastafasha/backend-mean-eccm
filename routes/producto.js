@@ -65,7 +65,7 @@ router.get('/productos/papelera/:search?', validarJWT, listar_papelera);
 
 // router.get('/producto/:filtro?/:min?/:max?/:sub?/:cat?/:orden?/:marca?', validarJWT, listar);
 
-router.get('/producto_by_slug/slug/:slug', validarJWT, find_by_slug);
+router.get('/producto_by_slug/slug/:slug', find_by_slug);
 router.get('/producto_cliente_autocomplete', validarJWT, listar_autocomplete);
 
 // router.put('/producto/:id/:banner?', path, validarJWT, actualizar);
@@ -84,7 +84,7 @@ router.get('/producto_general/general/data/:filtro?', listar_general_data);
 //categoria
 router.get('/productos/cat/papelera/:filtro?', validarJWT, listar_cat_papelera);
 router.get('/producto_admin_cat/cat/:filtro?', validarJWT, listar_cat);
-router.get('/categoria/name/:nombre', validarJWT, cat_by_name);
+router.get('/producto_by_categorynombre/:nombre', cat_by_name);
 router.get('/productos_general/cat/categoria/:id', listar_productosCateg);
 router.get('/productos_general/destacado/', destacado);
 
