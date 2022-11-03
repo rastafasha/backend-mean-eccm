@@ -43,33 +43,69 @@ const getVenta = async(req, res) => {
 
 };
 
-const crearVenta = async(req, res) => {
+function registro(req, res) {
+    let data = req.body;
 
-    const uid = req.uid;
-    const venta = new Venta({
-        usuario: uid,
-        ...req.body
+    var mydate = new Date();
+
+    var venta = new Venta();
+    venta.user = data.user;
+    venta.total_pagado = data.total_pagado;
+    venta.codigo_cupon = data.codigo_cupon;
+    venta.info_cupon = data.info_cupon;
+    venta.idtransaccion = data.idtransaccion;
+    venta.metodo_pago = data.metodo_pago;
+
+    venta.precio_envio = data.precio_envio;
+    venta.tipo_envio = data.tipo_envio;
+    venta.tiempo_estimado = data.tiempo_estimado;
+
+    venta.direccion = data.direccion;
+    venta.destinatario = data.destinatario;
+    venta.referencia = data.referencia;
+    venta.pais = data.pais;
+    venta.zip = data.zip;
+    venta.ciudad = data.ciudad;
+    venta.tracking_number = null;
+
+    venta.day = mydate.getDate();
+    venta.month = mydate.getMonth() + 1;
+    venta.year = mydate.getFullYear();
+
+    venta.estado = 'Venta en proceso';
+
+    venta.save((err, venta_save) => {
+        if (!err) {
+            if (venta_save) {
+                var detalle = data.detalles;
+                console.log(detalle);
+                detalle.forEach(element => {
+                    var detalleveta = new Detalle();
+                    detalleveta.user = data.user;
+                    detalleveta.venta = venta_save._id;
+                    detalleveta.producto = element.producto;
+                    detalleveta.cantidad = element.cantidad;
+                    detalleveta.precio = element.precio;
+                    detalleveta.color = element.color;
+                    detalleveta.selector = element.selector;
+
+                    detalleveta.save((err, detalle_save) => {
+                        if (detalle_save) {
+
+                        } else {
+
+                        }
+                    });
+                });
+                res.status(200).send({ message: "Registrado" });
+            } else {
+                res.status(403).send({ message: 'No se registro la venta, vuelva a intentar nuevamente.' });
+            }
+        } else {
+            res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
+        }
     });
-
-    try {
-
-        const ventaDB = await venta.save();
-
-        res.json({
-            ok: true,
-            venta: ventaDB
-        });
-
-    } catch (error) {
-        // console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Hable con el admin'
-        });
-    }
-
-
-};
+}
 
 const actualizarVenta = async(req, res) => {
 
@@ -552,7 +588,7 @@ function denegar(req, res) {
 
 module.exports = {
     getVentas,
-    crearVenta,
+    registro,
     actualizarVenta,
     borrarVenta,
     getVenta,

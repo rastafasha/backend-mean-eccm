@@ -239,6 +239,53 @@ const dataMessenger = (req, res) => {
     });
 }
 
+function listar_tickets(req, res) {
+    var id = req.params['id'];
+    Ticket.find({ venta: id }).sort({ createdAt: -1 }).exec((err, data_tickets) => {
+        if (err) {
+            res.status(500).send({ error: err });
+        } else {
+            if (data_tickets) {
+                res.status(200).send({ tickets: data_tickets });
+            }
+        }
+    });
+}
+
+function listar_todos(req, res) {
+    var status = req.params['status'];
+    var estado = req.params['estado'];
+
+
+    var miFechaActual = new Date();
+    console.log('dia ' + miFechaActual.getDate());
+
+    if (status == 'null' && estado == 'null') {
+        console.log('1');
+        Ticket.find().sort({ createdAt: -1 }).populate('user').exec((err, data_tickets) => {
+            if (err) {
+                res.status(500).send({ error: err });
+            } else {
+                if (data_tickets) {
+                    res.status(200).send({ tickets: data_tickets });
+                }
+            }
+        });
+    } else if (status && estado) {
+        console.log('2');
+        Ticket.find({ status: status, estado: estado }).sort({ createdAt: -1 }).populate('user').exec((err, data_tickets) => {
+            if (err) {
+                res.status(500).send({ error: err });
+            } else {
+                if (data_tickets) {
+                    res.status(200).send({ tickets: data_tickets });
+                }
+            }
+        });
+    }
+
+}
+
 
 
 
@@ -251,5 +298,7 @@ module.exports = {
     getTicket,
     dataMessenger,
     send,
-    listarTicketPorVenta
+    listarTicketPorVenta,
+    listar_tickets,
+    listar_todos
 };

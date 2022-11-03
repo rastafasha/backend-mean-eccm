@@ -5,7 +5,7 @@ const { Router } = require('express');
 const router = Router();
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
-const { getUsuarios, crearUsuarios, actualizarUsuario, borrarUsuario, getUsuario, actualizarUAdmin } = require('../controllers/usuarios');
+const { getUsuarios, crearUsuarios, actualizarUsuario, borrarUsuario, getUsuario, actualizarUAdmin, getAllUsers } = require('../controllers/usuarios');
 const {
     validarJWT,
     validarAdminRole,
@@ -15,6 +15,7 @@ const {
 } = require('../middlewares/validar-jwt');
 
 router.get('/', validarJWT, getUsuarios);
+router.get('/all/', validarJWT, getAllUsers);
 
 router.post('/', [
     check('first_name', 'el nombre es obligatorio').not().isEmpty(),

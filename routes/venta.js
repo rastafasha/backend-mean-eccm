@@ -6,7 +6,7 @@ const { Router } = require('express');
 const router = Router();
 const {
     getVentas,
-    crearVenta,
+    registro,
     actualizarVenta,
     borrarVenta,
     getVenta,
@@ -42,13 +42,13 @@ router.get('/:id', getVenta);
 
 router.post('/', [
     validarJWT,
-    check('direccion', 'El direccion del categoria es necesario').not().isEmpty(),
+    check('direccion', 'La direccion es necesario').not().isEmpty(),
     validarCampos
-], crearVenta);
+], registro);
 
 router.put('/:id', [
     validarJWT,
-    check('direccion', 'El direccion del categoria es necesario').not().isEmpty(),
+    check('direccion', 'La direccion es necesario').not().isEmpty(),
     validarCampos
 ], actualizarVenta);
 

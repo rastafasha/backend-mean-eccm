@@ -12,7 +12,9 @@ const {
     getTicket,
     dataMessenger,
     send,
-    listarTicketPorVenta
+    listarTicketPorVenta,
+    listar_tickets,
+    listar_todos
 } = require('../controllers/ticketController');
 const { validarJWT } = require('../middlewares/validar-jwt');
 const { check } = require('express-validator');
@@ -38,10 +40,12 @@ router.delete('/:id', validarJWT, borrarTicket);
 
 router.get('/:id', getTicket);
 
+router.get('/ticket_data/one/:id', getTicket);
+
 router.post('/ticket_msm/send', send);
 router.get('/ticket_chat/chat/:de/:para', dataMessenger);
-// router.get('/ticket_listar/listar/:id', listarTickets);
-// router.get('/ticket_admin/all/:status?/:estado?', listarTodos);
+router.get('/ticket_listar/listar/:id', listar_tickets);
+router.get('/ticket_admin/all/:status?/:estado?', listar_todos);
 
 
 

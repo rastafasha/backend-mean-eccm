@@ -389,24 +389,7 @@ function aumentar_venta(req, res) {
     })
 }
 
-function listar_admin(req, res) {
-    console.log("admin");
-    var filtro = req.params['filtro'];
-    Producto.find({
-        titulo: new RegExp(filtro, 'i'),
-        status: ['Activo', 'Desactivado', 'Edición'],
-    }, ).populate('marca').populate('categoria').sort({ createdAt: -1 }).exec((err, producto_data) => {
-        if (err) {
-            res.status(500).send({ message: 'Ocurrió un error en el servidor.' });
-        } else {
-            if (producto_data) {
-                res.status(200).send({ productos: producto_data });
-            } else {
-                res.status(500).send({ message: 'No se encontró ningun dato en esta sección.' });
-            }
-        }
-    });
-}
+
 
 
 

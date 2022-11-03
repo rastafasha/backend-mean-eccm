@@ -27,6 +27,16 @@ const getUsuarios = async(req, res) => {
     });
 };
 
+const getAllUsers = async(req, res) => {
+
+    const usuarios = await Usuario.find().populate('first_name email role google img');
+
+    res.json({
+        ok: true,
+        usuarios
+    });
+};
+
 const getUsuario = async(req, res) => {
 
     const id = req.params.id;
@@ -258,5 +268,6 @@ module.exports = {
     actualizarUsuario,
     actualizarUAdmin,
     borrarUsuario,
-    getUsuario
+    getUsuario,
+    getAllUsers
 };
